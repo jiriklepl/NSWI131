@@ -1,0 +1,21 @@
+# page-rank
+future-genetic
+akka-uct
+# movie-lens
+scala-doku
+# chi-square
+fj-kmeans
+db-shootout
+finagle-http
+reactors
+# dec-tree
+# naive-bayes
+# als
+par-mnemonics
+scala-kmeans
+philosophers
+# log-regression
+# gauss-mix
+mnemonics
+dotty
+finagle-chirper
