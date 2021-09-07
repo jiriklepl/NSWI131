@@ -10,6 +10,8 @@ The environment is a virtual Linux machine with Fedora user space.
 
 - numactl, numactl-devel
 - git
+- R-devel, libxml2-devel, openssl-devel, libcurl-devel
+  - packages: tidyverse
 - less, vim
 - wget
 - java-11-openjdk-devel
@@ -50,4 +52,8 @@ The list of all benchmarks retrieved by the `--raw-list` option in the Renaissan
 
 ```sh
 while sleep 1; do lscpu; done | awk 'BEGIN { print "timestamp,CPU MHz" } /CPU MHz/ { print systime() "," $3 }'
+```
+
+```sh
+awk '/^[^#]/ { printf $0 " " } END { print }' benchmarks.txt
 ```
