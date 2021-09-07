@@ -10,4 +10,4 @@ OUTPUT_CSV=${1:-$DEFAULT_CSV}
 
 
 
-java -jar "$RENAISSANCE_DIR/$RENAISSANCE_JAR_NAME" --plugin "$HEAP_MEASURE_CPATH"'!org.renaissance.plugins.heapmeasure.Main' --csv "$OUTPUT_CSV" $(awk '/^[^#]/ { printf $0 " " } END { print "" }' benchmarks.txt)
+java -jar "$RENAISSANCE_DIR/$RENAISSANCE_JAR_NAME" --plugin "$HEAP_MEASURE_CPATH"'!org.renaissance.plugins.heapmeasure.Main' --csv "$OUTPUT_CSV" "$(awk '/^[^#]/ { printf $0 " " } END { print "" }' benchmarks.txt)"
