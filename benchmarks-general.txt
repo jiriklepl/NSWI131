@@ -4,18 +4,18 @@ akka-uct
 # movie-lens
 scala-doku
 # chi-square
-# fj-kmeans
+fj-kmeans
 db-shootout
-# finagle-http
+finagle-http
 reactors
 # dec-tree
 # naive-bayes
 # als
-# par-mnemonics
+par-mnemonics
 scala-kmeans
-# philosophers
+philosophers
 # log-regression
 # gauss-mix
-# mnemonics
+mnemonics
 dotty
-# finagle-chirper
+finagle-chirper
