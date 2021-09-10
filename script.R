@@ -2,8 +2,6 @@
 
 library('tidyverse')
 
-# TODO: add cpu set strategy
-
 get_data <- function(data_dir) (
 	list.files(path=data_dir, recursive=TRUE, pattern="*.csv", full.names=TRUE) %>%
 		map(function(x) (read_csv(x, show_col_types=FALSE) %>%
