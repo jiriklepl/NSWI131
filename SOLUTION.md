@@ -57,3 +57,40 @@ while sleep 1; do lscpu; done | awk 'BEGIN { print "timestamp,CPU MHz" } /CPU MH
 ```sh
 awk '/^[^#]/ { printf $0 " " } END { print }' benchmarks.txt
 ```
+
+## Results
+
+### concurrency
+
+- `akka-uct`: TODO - waiting for small
+- `fj-kmeans`
+- `reactors`
+
+### database
+
+- `db-shootout`: TODO - waiting for small
+
+### functional
+
+- `future-genetic`
+- `mnemonics`
+- `par-mnemonics`
+
+### scala
+
+- `dotty`: TODO - waiting for small
+- `philosophers`
+- `scala-doku`
+- `scala-kmeans`
+
+### web
+
+- `finagle-chirper`: this benchmark does not scale well with more cores. Its performance actually decreases with more CPU cores. Memory usage of the benchmark is very volatile in the measured data, but it slightly increases with more cores.
+
+  These results are quite surprising considering the technology used by the benchmark, Twitter Finagle, is advertized as being meant for "high-concurrency servers" by its [website](https://twitter.github.io/finagle/). On the other hand, the decrease in performance can be specific to the implementation of the benchmark as it, according to the documentation, heavily relies on atomics and probably is not meant to measure scalability.
+
+  The memory usage increase can be explained by the overhead of thread-running and thread-safety measures performed by the framework.
+
+- `finagle-http`: this benchmark does not scale well with more cores. Its performance steadily decreases with more CPU cores regardless of whether. Memory usage of the benchmark is very volatile in the measured data, but it clearly increases with more cores.
+
+  The specific reasons for the decrease in performance and the increase in memory usage are the same as for `finagle-chirper` as they both use the same technology. This benchmark uses one more framework, Netty, which relies on asynchronous computing, but, in this benchmark with centralized architecture, falls victim to blocking.
