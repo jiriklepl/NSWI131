@@ -1,8 +1,9 @@
 #!/bin/sh
 
 CPU_COUNT=${1:-1}
+STRATEGY_MAX=${2:-4}
 
-for strategy in $(seq 4); do
+for strategy in $(seq "$STRATEGY_MAX"); do
 	DIR_NAME="data/$strategy"
 	mkdir -p "$DIR_NAME"
 	OUTPUT_CSV="$DIR_NAME/$CPU_COUNT.csv"
