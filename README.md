@@ -22,11 +22,9 @@ The environment is a virtual Linux machine with Fedora user space.
 
 **CPU:**
 
-The CPU of the environment is *Intel(R) Xeon(R) Gold 6230*. It has access to 80 CPU threads (including hyper-threading). The CPU nodes 0-19, 40-59 are on NUMA node 0, the rest (20-39, 60-79) is on NUMA node 1. CPU nodes *n* and *n+40* always share the same physical core.
+The CPU of the environment is *Intel(R) Xeon(R) Gold 6230*, there are two such CPUs, each representing one NUMA node. It has access to 80 CPU threads (including hyper-threading). The CPU nodes 0-19, 40-59 are on NUMA node 0, the rest (20-39, 60-79) is on NUMA node 1. CPU nodes *n* and *n+40* always share the same physical core.
 
 CPU clock-rate is 2100 MHz and maximum CPU clock-rate is 3900 MHz, and it idles at 800 MHz.
-
-There are two such CPUs, each representing one NUMA node.
 
 The cache configuration of the CPUs is as follows:
 
