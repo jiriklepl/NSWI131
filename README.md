@@ -83,7 +83,7 @@ In addition to the violin plots, there is a line plot showing the mean values fo
 
 ### concurrency
 
-- `akka-uct`: (including the small dataset) this benchmark performs consistently better on multiple CPU cores compared to single-threaded runtime. However, not considering this special case, the performance decreases with higher number of cores, especially when they do not share the same NUMA node. Considering the [documentation](https://akka.io/docs/), this seems to be due to frequent data transfers between actors.
+- `akka-uct`: (included in the small dataset) this benchmark performs consistently better on multiple CPU cores compared to single-threaded runtime. However, not considering this special case, the performance decreases with higher number of cores, especially when they do not share the same NUMA node. Considering the [documentation](https://akka.io/docs/), this seems to be due to frequent data transfers between actors.
 
   The memory usage of the benchmark is too volatile to draw any conclusions on the lower numbers of CPU cores (`N <= 16`). On higher numbers, it consistently slowly increases with the number of cores.
 
@@ -91,7 +91,7 @@ In addition to the violin plots, there is a line plot showing the mean values fo
 
   The memory usage is very volatile, but, on average, it is almost `4` times better when being run on a single NUMA node.
 
-- `reactors`: (including the small dataset) this benchmark performs best on 4 CPU cores if they share the same NUMA node, very similar result is obtained on 3 cores (within 10% difference in median and mean). The scaling from 1 core to 3 cores roughly copies the scaling of a well-parallelizable algorithm, the 4 core case is the last case of performance improvement with higher number of cores.
+- `reactors`: (included in the small dataset) this benchmark performs best on 4 CPU cores if they share the same NUMA node, very similar result is obtained on 3 cores (within 10% difference in median and mean). The scaling from 1 core to 3 cores roughly copies the scaling of a well-parallelizable algorithm, the 4 core case is the last case of performance improvement with higher number of cores.
 
   The third set for this benchmark in the original combined dataset shows that this benchmark is very negatively affected by the cores being present on different NUMA nodes. This is further confirmed by the small dataset. In other cases (strategies I, II and IV, still in the small dataset), the performance exhibits very little volatility.
 
@@ -101,13 +101,13 @@ In addition to the violin plots, there is a line plot showing the mean values fo
 
 ### database
 
-- `db-shootout`: (including the small dataset) this benchmark performs better with a higher number of CPU cores and this increase in performance continues up until 15 cores (sooner if they do not share the same NUMA node), then the performance slowly decreases with a higher number of cores.
+- `db-shootout`: (included in the small dataset) this benchmark performs better with a higher number of CPU cores and this increase in performance continues up until 15 cores (sooner if they do not share the same NUMA node), then the performance slowly decreases with a higher number of cores.
 
   The memory utilization slowly increases with more CPU cores. This is visible in the original combined dataset.
 
 ### functional
 
-- `future-genetic`: (including the small dataset) this benchmark is sped up by assigning 2 CPU cores from the same NUMA node and it increases drastically more with 3 CPU cores. From that point on the benchmark's performance seems independent on the actual number of cores.
+- `future-genetic`: (included in the small dataset) this benchmark is sped up by assigning 2 CPU cores from the same NUMA node and it increases drastically more with 3 CPU cores. From that point on the benchmark's performance seems independent on the actual number of cores.
 
   The memory usage is very volatile, but it seems to be independent on the number of CPU cores.
 
@@ -121,7 +121,7 @@ In addition to the violin plots, there is a line plot showing the mean values fo
 
 ### scala
 
-- `dotty`: (including the small dataset) the performance of this benchmark is very consistent and independent on the actual number of CPU cores, with a notable exception of the case with just 1 core.
+- `dotty`: (included in the small dataset) the performance of this benchmark is very consistent and independent on the actual number of CPU cores, with a notable exception of the case with just 1 core.
 
   The small dataset shows that the benchmark's performance increases slightly with each added core from 1 core up until 4 cores (if they share the same NUMA core).
   
@@ -131,13 +131,13 @@ In addition to the violin plots, there is a line plot showing the mean values fo
 
 - `philosophers`: this benchmark solves the problem of dining philosophers. This problem is used to illustrate process scheduling correctness. The complexity of the problem increases with the number of cores, so it makes sense that the performance decreases. The increase in benchmark duration linearly correlates with the number of cores (with very little variation), which is the expected result, given the nature of the benchmark. The memory usage of the benchmark is very volatile, but the mean memory usage slightly increases with the number of cores, which is the expected result.
 
-- `scala-doku`: (including the small dataset) this benchmark's performance is very volatile in its dependence on external influences, but very consistent in subsequent runtime instances - this can be best seen when comparing sets 1 and 2 in the small dataset, the assigned CPU cores are the same up until 10, but the two sets contain very different results for these cases.
+- `scala-doku`: (included in the small dataset) this benchmark's performance is very volatile in its dependence on external influences, but very consistent in subsequent runtime instances - this can be best seen when comparing sets 1 and 2 in the small dataset, the assigned CPU cores are the same up until 10, but the two sets contain very different results for these cases.
 
   Taking into account the previous conclusion, the benchmark's performance seems independent on the number of CPU cores as evidenced by the original combined dataset. This applies to the memory usage as well. However, in the memory usage sets, there is consistently a difference between the case with just one core and the other cases. This could be accounted to some internal mechanism that prepares the framework for multi-threaded runtime which the benchmark then does not utilize.
 
   The overall conclusion is that the number of assigned cores (and NUMA nodes) does not affect the performance nor it affects the memory usage.
 
-- `scala-kmeans`: (including the small dataset) all the sets for this benchmark show that the number of CPU cores does not affect the performance of the benchmark. The small dataset exhibits few outlying subsequent measurements, but this is probably caused by external influences as there is very significant difference between the runtime durations collected in the first big dataset and the second big dataset (this can be seen in the plots for the original combined dataset as all the 'violins' have two 'heads' - each for one of the two datasets).
+- `scala-kmeans`: (included in the small dataset) all the sets for this benchmark show that the number of CPU cores does not affect the performance of the benchmark. The small dataset exhibits few outlying subsequent measurements, but this is probably caused by external influences as there is very significant difference between the runtime durations collected in the first big dataset and the second big dataset (this can be seen in the plots for the original combined dataset as all the 'violins' have two 'heads' - each for one of the two datasets).
 
   The memory usage dependence on the number of number of CPU cores in very surprising as the memory usage seems independent on the number of cores with the exceptions of `2 <= N <= 15` which are consistently significantly lower. This can be probably explained by some internal Java interpreter behavior.
 
