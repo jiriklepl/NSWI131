@@ -65,9 +65,7 @@ There were 2 batches of data ([data.tar.gz](data.tar.gz) and [data2.tar.gz](data
 
 For more details on CPU core assignment strategies, see the [cpuset.sh](cpuset.sh) script.
 
-The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a single argument being, for each consecutive call, *1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80*, specifying the number of cores being assigned. This script then cycles through the 4 strategies.
-
-This was performed twice and the results of this make up the *original combined dataset*.
+The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a single argument being, for each consecutive call, *1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80*, specifying the number of cores being assigned. This script then cycles through the 4 strategies. This was performed twice and the results of this make up the *original combined dataset*.
 
 Then the R script [script.R](script.R) was used to generate 8 plots for each benchmark, 4 for the performance and 4 for memory usage.
 
@@ -75,7 +73,7 @@ Then there were collected more data for certain benchmarks, those that appeared 
 
 ## Results
 
-Here, we will go through conclusions from the data collected from the benchmarks. The number of CPU cores in the plots will be referred to as `N`.
+Here, we will go through the conclusions from the data collected from the benchmarks. The number of CPU cores in the plots will be referred to as `N`.
 
 All the results are plotted out in the [Rplots.pdf](Rplots.pdf) document. Their respective names match the names in this document with added number specifying which CPU assignment strategy was used and `duration` or `heap-usage` specifying whether the plot shows results for performance or memory usage, respectively. The names of the results collected in the small dataset end with `small`.
 
