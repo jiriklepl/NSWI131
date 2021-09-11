@@ -1,6 +1,6 @@
 # SOLUTION
 
-TODO: co se deje a proc
+This study analyzes the performance of the benchmarks of the [Renaissance Suite](https://renaissance.dev/). It measures the duration of the runtime of each benchmark by itself. There is a [plugin](heap-measure.tar.gz) made for this study that measures the heap usage of each iteration of each benchmark.
 
 ## Research
 
@@ -65,7 +65,13 @@ There were 2 batches of data ([data.tar.gz](data.tar.gz) and [data2.tar.gz](data
 
 For more details on CPU core assignment strategies, see the [cpuset.sh](cpuset.sh) script.
 
-The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a single argument being, for each consecutive call, *1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80*. This script then cycles through the 4 strategies.
+The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a single argument being, for each consecutive call, *1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80*, specifying the number of cores being assigned. This script then cycles through the 4 strategies.
+
+This was performed twice and the results of this make up the *original combined dataset*.
+
+Then the R script [script.R](script.R) was used to generate 8 plots for each benchmark, 4 for the performance and 4 for memory usage.
+
+Then there were collected more data for certain benchmarks, those that appeared to behave differently when run on a low number of CPU cores. These benchmarks are those that are not commented out in [benchmarks-small.txt](benchmarks-small.txt). This new dataset, the *small dataset*, was collected by the [collect.sh](collect.sh) script with two arguments, first being in each call one of *1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16*, consecutively, specifying the number of cores being assigned, and the second one being 3, specifying the number of strategies of cores assignment.
 
 ## Results
 
@@ -89,11 +95,13 @@ The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a si
 
 ### database
 
-- `db-shootout`: TODO - waiting for small
+- `db-shootout`: (including the small dataset) this benchmark performs better with a higher number of CPU cores and this increase in performance continues up until 15 cores (sooner if they do not share the same NUMA node), then the performance slowly decreases with a higher number of cores.
+
+  The memory utilization slowly increases with more CPU cores. This is visible in the original combined dataset.
 
 ### functional
 
-- `future-genetic`: TODO - waiting for small
+- `future-genetic`: (including the small dataset) TODO - waiting for small
 
 - `mnemonics`, `par-mnemonics`: these two benchmarks solve the phone mnemonics using JDK streams (in `par-mnemonic`, parallel JDK streams). They are very simple benchmarks that encode a predefined phone number into a mnemonic using a specific dictionary.
 
@@ -105,12 +113,25 @@ The 17 x 4 sets where collected by the [collect.sh](collect.sh) script with a si
 
 ### scala
 
-- `dotty`: TODO - waiting for small
+- `dotty`: (including the small dataset) the performance of this benchmark is very consistent and independent on the actual number of CPU cores, with a notable exception of the case with just 1 core.
+
+  The small dataset shows that the benchmark's performance increases slightly with each added core from 1 core up until 4 cores (if they share the same NUMA core).
+  
+  The third set of results for this benchmark in the small dataset shows that assigning cores on different NUMA cores significantly hinders the performance. This is further confirmed by the third set in the original combined dataset.
+
+  The memory usage slowly increases with the number of CPU cores, however, the increase is almost negligible in the original combined dataset. In the small dataset, this increase is very fast if the cores do not share the same NUMA core as can be seen in the third set of the small dataset.
 
 - `philosophers`: this benchmark solves the problem of dining philosophers. This problem is used to illustrate process scheduling correctness. The complexity of the problem increases with the number of cores, so it makes sense that the performance decreases. The increase in benchmark duration linearly correlates with the number of cores (with very little variation), which is the expected result, given the nature of the benchmark. The memory usage of the benchmark is very volatile, but the mean memory usage slightly increases with the number of cores, which is the expected result.
 
-- `scala-doku`: TODO - waiting for small
-- `scala-kmeans`: TODO - waiting for small
+- `scala-doku`: (including the small dataset) this benchmark's performance is very volatile in its dependence on external influences, but very consistent in subsequent runtimes - this can be best seen when comparing sets 1 and 2 in the small dataset, the assigned CPU cores are the same up until 10, but the two sets contain very different results for these cases.
+
+  Taking into account the previous conclusion, the benchmark's performance seems independent on the number of CPU cores as evidenced by the original combined dataset. This applies to the memory usage as well. However, in the memory usage sets, there is consistently a difference between the case with just one core and the other cases. This could be accounted to some internal mechanism that prepares the framework for multi-threaded runtime which the benchmark then does not utilize.
+
+  The overall conclusion is that the number of assigned cores (and NUMA nodes) does not affect the performance nor it affects the memory usage.
+
+- `scala-kmeans`: (including the small dataset) all the sets for this benchmark show that the number of CPU cores does not affect the performance of the benchmark. The small dataset exhibits few outlying subsequent measurements, but this is probably caused by external influences as there is very significant difference between the runtime durations collected in the first big dataset and the second big dataset (this can be seen in the plots for the original combined dataset as all the 'violins' have two 'heads' - each for one of the two datasets).
+
+  The memory usage dependence on the number of number of CPU cores in very surprising as the memory usage seems independent on the number of cores with the exceptions of `2 <= N <= 15` which are consistently significantly lower. This can be probably explained by some internal Java interpreter behavior.
 
 ### web
 
