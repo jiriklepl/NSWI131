@@ -1,6 +1,6 @@
 # SOLUTION
 
-This study analyzes the performance of the benchmarks of the [Renaissance Suite](https://renaissance.dev/). It measures the duration of the runtime of each benchmark by itself. There is a [plugin](heap-measure.tar.gz) made for this study that measures the heap usage of each iteration of each benchmark.
+This study analyzes the performance of the benchmarks of the [Renaissance Suite](https://renaissance.dev/). It measures the duration of the runtime of each benchmark by itself. There is a [plugin](heap-measure.tar.gz) made for this study that measures the heap usage of each iteration of each benchmark. The fork of the suite with the plugin included can be found at [https://github.com/jiriklepl/renaissance](https://github.com/jiriklepl/renaissance).
 
 ## Research
 
