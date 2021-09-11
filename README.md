@@ -79,7 +79,7 @@ All the results are plotted out in the [Rplots.pdf](Rplots.pdf) document. Their 
 
 I used violin plots because the data are very volatile and the two main collecting runs gave slightly different results (one dataset consistently showed that the benchmarks performed better). Violin plots make it easy to see whether it affects the final results and to easily filter this out.
 
-In addition to the violin plots there is a line plot showing the mean values for each *benchmark x core count x strategy* trio. This conveniently shows the trends of changes in performance and memory usage.
+In addition to the violin plots, there is a line plot showing the mean values for each *benchmark x core count x strategy* trio. This conveniently shows the trends of changes in performance and memory usage.
 
 ### concurrency
 
