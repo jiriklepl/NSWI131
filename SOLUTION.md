@@ -24,13 +24,15 @@ The environment is a virtual Linux machine with Fedora user space.
 
 The CPU of the environment is *Intel(R) Xeon(R) Gold 6230*. It has access to 80 CPU threads (including hyper-threading). The CPU nodes 0-19, 40-59 are on NUMA node 0, the rest (20-39, 60-79) is on NUMA node 1. CPU nodes *n* and *n+40* always share the same physical core.
 
-CPU clock-rate is 3900 MHz (max) and it idles at 800 MHz.
+CPU clock-rate is 2100 MHz and maximum CPU clock-rate is 3900 MHz, and it idles at 800 MHz.
+
+There are two such CPUs, each representing one NUMA node.
 
 The cache configuration of the CPUs is as follows:
 
-- **L1:** **TODO**
-- **L2:** **TODO**
-- **L3:** **TODO**
+- **L1:** 1.3 MiB data and 1.3 MiB instruction cache
+- **L2:** 40 MiB
+- **L3:** 55 MiB
 
 **RAM:**
 
@@ -44,7 +46,7 @@ The environment is equipped with OpenJDK 11.0.11 implementation of Java Developm
 
 **Controlling CPU count:**
 
-To limit the number of CPU cores used in runtime, we will use the program `numactl`
+To limit the number of CPU cores used in runtime, we will use the program `numactl`.
 
 **Renaissance Benchmark Suite:**
 
@@ -75,6 +77,14 @@ Then there were collected more data for certain benchmarks, those that appeared 
 
 ## Results
 
+Here, we will go through conclusions from the data collected from the benchmarks. The number of CPU cores in the plots will be referred to as `N`.
+
+All the results are plotted out in the [Rplots.pdf](Rplots.pdf) document. Their respective names match the names in this document with added number specifying which CPU assignment strategy was used and `duration` or `heap-usage` specifying whether the plot shows results for performance or memory usage, respectively. The names of the results collected in the small dataset end with `small`.
+
+I used violin plots because the data are very volatile and the two main collecting runs gave slightly different results (one dataset consistently showed that the benchmarks performed better). Violin plots make it easy to see whether it affects the final results and to easily filter this out.
+
+In addition to the violin plots there is a line plot showing the mean values for each *benchmark x core count x strategy* trio. This conveniently shows the trends of changes in performance and memory usage.
+
 ### concurrency
 
 - `akka-uct`: (including the small dataset) this benchmark performs consistently better on multiple CPU cores compared to single-threaded runtime. However, not considering this special case, the performance decreases with higher number of cores, especially when they do not share the same NUMA node. Considering the [documentation](https://akka.io/docs/), this seems to be due to frequent data transfers between actors.
@@ -101,7 +111,9 @@ Then there were collected more data for certain benchmarks, those that appeared 
 
 ### functional
 
-- `future-genetic`: (including the small dataset) TODO - waiting for small
+- `future-genetic`: (including the small dataset) this benchmark is sped up by assigning 2 CPU cores from the same NUMA node and it increases drastically more with 3 CPU cores. From that point on the benchmark's performance seems independent on the actual number of cores.
+
+  The memory usage is very volatile, but it seems to be independent on the number of CPU cores.
 
 - `mnemonics`, `par-mnemonics`: these two benchmarks solve the phone mnemonics using JDK streams (in `par-mnemonic`, parallel JDK streams). They are very simple benchmarks that encode a predefined phone number into a mnemonic using a specific dictionary.
 
@@ -123,7 +135,7 @@ Then there were collected more data for certain benchmarks, those that appeared 
 
 - `philosophers`: this benchmark solves the problem of dining philosophers. This problem is used to illustrate process scheduling correctness. The complexity of the problem increases with the number of cores, so it makes sense that the performance decreases. The increase in benchmark duration linearly correlates with the number of cores (with very little variation), which is the expected result, given the nature of the benchmark. The memory usage of the benchmark is very volatile, but the mean memory usage slightly increases with the number of cores, which is the expected result.
 
-- `scala-doku`: (including the small dataset) this benchmark's performance is very volatile in its dependence on external influences, but very consistent in subsequent runtimes - this can be best seen when comparing sets 1 and 2 in the small dataset, the assigned CPU cores are the same up until 10, but the two sets contain very different results for these cases.
+- `scala-doku`: (including the small dataset) this benchmark's performance is very volatile in its dependence on external influences, but very consistent in subsequent runtime instances - this can be best seen when comparing sets 1 and 2 in the small dataset, the assigned CPU cores are the same up until 10, but the two sets contain very different results for these cases.
 
   Taking into account the previous conclusion, the benchmark's performance seems independent on the number of CPU cores as evidenced by the original combined dataset. This applies to the memory usage as well. However, in the memory usage sets, there is consistently a difference between the case with just one core and the other cases. This could be accounted to some internal mechanism that prepares the framework for multi-threaded runtime which the benchmark then does not utilize.
 
