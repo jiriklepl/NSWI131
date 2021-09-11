@@ -50,7 +50,7 @@ To limit the number of CPU cores used in runtime, we will use the program `numac
 
 We will use the 0.12 MIT distribution of the [Renaissance Benchmark Suite](https://github.com/renaissance-benchmarks/renaissance/releases/download/v0.12.0/renaissance-mit-0.12.0.jar).
 
-The list of all benchmarks retrieved by the `--raw-list` option in the Renaissance runtime is in the file [benchmarks.txt](benchmarks.txt). This file will be used during data collecting.
+The list of all benchmarks retrieved by the `--raw-list` option in the Renaissance runtime is in the file [benchmarks.txt](benchmarks.txt). This file will be used during data collecting. The spark benchmarks were excluded as they do not allow running on more CPU cores then they are designed to.
 
 ## Methodology
 
